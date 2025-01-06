@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
 
 export async function GET() {
   try {
@@ -64,6 +66,35 @@ export async function POST(request: Request) {
     console.error('Error creating user:', error)
     return NextResponse.json(
       { error: 'Failed to create user' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PATCH(request: Request) {
+  const supabase = createRouteHandlerClient({ cookies })
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+    
+    if (!session?.user.user_metadata.is_admin) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const { userId, isAdmin } = await request.json()
+
+    const { data, error } = await supabase.auth.admin.updateUserById(
+      userId,
+      { user_metadata: { is_admin: isAdmin } }
+    )
+
+    if (error) throw error
+
+    return NextResponse.json(data)
+  } catch (error) {
+    console.error("Error updating user:", error)
+    return NextResponse.json(
+      { error: "Failed to update user" },
       { status: 500 }
     )
   }
