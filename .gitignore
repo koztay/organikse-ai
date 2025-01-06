@@ -1,2 +1,5 @@
 node_modules
 init
+.
+.env.local
+.env.*.local
