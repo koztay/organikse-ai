@@ -19,34 +19,50 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-          <UserCircle className="h-6 w-6 text-gray-600" />
+        <Button 
+          variant="outline" 
+          className="relative h-9 px-4 flex items-center gap-2"
+        >
+          <UserCircle className="h-5 w-5 text-green-600" />
+          <span className="hidden sm:inline-block">
+            {session ? (session.user.name || 'Account') : 'Sign In'}
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            {session ? (
-              <p className="text-sm font-medium leading-none">{session.user.name || session.user.email}</p>
-            ) : (
-              <p className="text-sm font-medium leading-none">Account</p>
-            )}
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
         {session ? (
-          <DropdownMenuItem
-            className="text-red-600 cursor-pointer"
-            onClick={() => signOut()}
-          >
-            Sign out
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {session.user.name || session.user.email}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {session.user.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-red-600 cursor-pointer"
+              onClick={() => signOut()}
+            >
+              Sign out
+            </DropdownMenuItem>
+          </>
         ) : (
-          <DropdownMenuItem asChild>
-            <Link href="/auth/signin" className="text-green-600 cursor-pointer">
-              Sign in
-            </Link>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem asChild>
+              <Link href="/auth/signin" className="w-full text-green-600 cursor-pointer">
+                Sign in
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/auth/signup" className="w-full text-gray-600 cursor-pointer">
+                Create account
+              </Link>
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
