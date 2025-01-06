@@ -55,6 +55,27 @@ export default function UsersPage() {
     (user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
+  const toggleAdminRole = async (userId: string, currentRole: boolean) => {
+    try {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          role: currentRole ? 'authenticated' : 'service_role',
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to update user role')
+      
+      // Refresh the users list
+      fetchUsers()
+    } catch (error) {
+      console.error('Error updating user role:', error)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -124,11 +145,9 @@ export default function UsersPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
-                          onClick={() => {
-                            // TODO: Implement edit user
-                          }}
+                          onClick={() => toggleAdminRole(user.id, user.is_admin)}
                         >
-                          Edit user
+                          {user.is_admin ? 'Remove admin' : 'Make admin'}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-red-600"

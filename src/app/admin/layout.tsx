@@ -19,15 +19,13 @@ export default function AdminLayout({
     )
   }
 
-  if (!session?.user) {
-    redirect("/auth/signin")
+  // Check for both authentication and admin status
+  if (!session?.user || !session.user.isAdmin) {
+    redirect("/")
   }
 
-  // TODO: Add proper admin check
-  // For now, we'll consider all authenticated users as admins
   return (
     <div className="flex min-h-screen">
-      {/* Admin Sidebar */}
       <aside className="w-64 bg-white border-r">
         <div className="p-6">
           <h2 className="text-lg font-semibold text-green-600">Admin Panel</h2>
@@ -57,8 +55,6 @@ export default function AdminLayout({
           </ul>
         </nav>
       </aside>
-
-      {/* Main Content */}
       <main className="flex-1 p-8 bg-gray-50">
         {children}
       </main>
