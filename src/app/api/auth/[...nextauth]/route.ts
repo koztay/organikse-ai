@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { supabase } from "@/lib/supabase"
 
 export const authOptions: NextAuthOptions = {
+  debug: true,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -11,30 +12,40 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials): Promise<any | null> {
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Please enter an email and password')
         }
 
-        const { data: { user }, error } = await supabase.auth.signInWithPassword({
-          email: credentials.email,
-          password: credentials.password,
-        })
+        try {
+          const { data: { user }, error } = await supabase.auth.signInWithPassword({
+            email: credentials.email,
+            password: credentials.password,
+          })
 
-        if (error) {
-          throw new Error(error.message)
-        }
+          if (error) {
+            throw new Error(error.message)
+          }
 
-        return {
-          id: user?.id,
-          email: user?.email,
-          name: user?.user_metadata?.full_name,
+          if (!user) {
+            throw new Error('No user found')
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.full_name,
+          }
+        } catch (error) {
+          console.error('Auth error:', error)
+          throw error
         }
       }
     })
   ],
   pages: {
     signIn: '/auth/signin',
+    signUp: '/auth/signup',
   },
   callbacks: {
     async jwt({ token, user }) {
