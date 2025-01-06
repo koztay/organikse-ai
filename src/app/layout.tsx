@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { SessionProvider } from "@/components/providers/session-provider"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -20,13 +21,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "min-h-screen bg-background")}>
-        <SessionProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </SessionProvider>
+        <ThemeProvider>
+          <SessionProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

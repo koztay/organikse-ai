@@ -3,140 +3,52 @@ import { Facebook, Instagram, Linkedin, Mail, MapPin, Twitter } from "lucide-rea
 
 export function Footer() {
   return (
-    <footer className="border-t bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-green-600">OrganikSE</span>
-            </Link>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Connecting you with organic products and sustainable businesses in Sweden. 
-              Making healthier choices easier for everyone.
-            </p>
-            <div className="flex space-x-4 pt-2">
-              <a href="#" className="text-gray-400 hover:text-green-600 transition-colors">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-green-600 transition-colors">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-green-600 transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-green-600 transition-colors">
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 text-gray-900 uppercase tracking-wider">
-              Quick Links
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link 
-                  href="/companies" 
-                  className="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-2"
-                >
-                  Companies
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/products" 
-                  className="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-2"
-                >
-                  Products
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/about" 
-                  className="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-2"
-                >
-                  About Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 text-gray-900 uppercase tracking-wider">
-              Legal
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link 
-                  href="/privacy" 
-                  className="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-2"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/terms" 
-                  className="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-2"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/cookies" 
-                  className="text-gray-600 hover:text-green-600 transition-colors flex items-center gap-2"
-                >
-                  Cookie Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 text-gray-900 uppercase tracking-wider">
-              Contact
-            </h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-gray-600">
-                <Mail className="h-4 w-4 text-green-600" />
-                contact@organikse.com
-              </li>
-              <li className="flex items-center gap-2 text-gray-600">
-                <MapPin className="h-4 w-4 text-green-600" />
-                Stockholm, Sweden
-              </li>
-            </ul>
-          </div>
+    <footer className="border-t bg-background">
+      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            Built by{" "}
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4 transition-colors hover:text-foreground"
+            >
+              OrganikSE
+            </a>
+            . The source code is available on{" "}
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4 transition-colors hover:text-foreground"
+            >
+              GitHub
+            </a>
+            .
+          </p>
         </div>
-
-        {/* Bottom Bar */}
-        <div className="border-t pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} OrganikSE. All rights reserved.
-            </p>
-            <div className="flex items-center gap-4">
-              <Link 
-                href="/sitemap" 
-                className="text-sm text-gray-600 hover:text-green-600 transition-colors"
-              >
-                Sitemap
-              </Link>
-              <Link 
-                href="/accessibility" 
-                className="text-sm text-gray-600 hover:text-green-600 transition-colors"
-              >
-                Accessibility
-              </Link>
-            </div>
-          </div>
+        <div className="flex items-center space-x-1">
+          <nav className="flex items-center space-x-6">
+            <Link 
+              href="/about" 
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              About
+            </Link>
+            <Link 
+              href="/privacy" 
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Privacy
+            </Link>
+            <Link 
+              href="/terms" 
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Terms
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>
