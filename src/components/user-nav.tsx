@@ -20,6 +20,7 @@ export function UserNav() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
+          type="button"
           variant="outline" 
           className="relative h-9 px-4 flex items-center gap-2"
         >
@@ -29,7 +30,7 @@ export function UserNav() {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent align="end" className="w-56">
         {session ? (
           <>
             <DropdownMenuLabel className="font-normal">
@@ -44,21 +45,20 @@ export function UserNav() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-600 cursor-pointer"
               onClick={() => signOut()}
             >
-              Sign out
+              <span className="text-red-600">Sign out</span>
             </DropdownMenuItem>
           </>
         ) : (
           <>
-            <DropdownMenuItem asChild>
-              <Link href="/auth/signin" className="w-full text-green-600 cursor-pointer">
+            <DropdownMenuItem>
+              <Link href="/auth/signin" className="w-full text-green-600">
                 Sign in
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/auth/signup" className="w-full text-gray-600 cursor-pointer">
+            <DropdownMenuItem>
+              <Link href="/auth/signup" className="w-full text-gray-600">
                 Create account
               </Link>
             </DropdownMenuItem>
