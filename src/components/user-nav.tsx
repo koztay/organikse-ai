@@ -44,23 +44,17 @@ export function UserNav() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => signOut()}
-            >
+            <DropdownMenuItem onClick={() => signOut()}>
               <span className="text-red-600">Sign out</span>
             </DropdownMenuItem>
           </>
         ) : (
           <>
-            <DropdownMenuItem>
-              <Link href="/auth/signin" className="w-full text-green-600">
-                Sign in
-              </Link>
+            <DropdownMenuItem asChild>
+              <Link href="/auth/signin">Sign in</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="/auth/signup" className="w-full text-gray-600">
-                Create account
-              </Link>
+            <DropdownMenuItem asChild>
+              <Link href="/auth/signup">Create account</Link>
             </DropdownMenuItem>
           </>
         )}
