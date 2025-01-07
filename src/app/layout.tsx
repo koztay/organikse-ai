@@ -23,8 +23,13 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "min-h-screen bg-background")}>
         <SupabaseProvider>
-          <ThemeProvider defaultTheme="system">
-            <Navbar session={null} />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar user={user} />
             {children}
             <Footer />
             <Toaster />
