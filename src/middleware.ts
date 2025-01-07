@@ -31,10 +31,11 @@ export async function middleware(request: NextRequest) {
   return res
 }
 
+// Only protect specific routes
 export const config = {
   matcher: [
     '/admin/:path*',
     '/settings/:path*',
-    '/api/admin/:path*'
+    '/((?!api|_next/static|_next/image|favicon.ico|test|companies).)*'
   ]
 } 

@@ -4,19 +4,32 @@ export type Company = {
   address: string
   phone: string
   email: string
-  social_links: {
+  description?: string
+  social_links?: {
+    website?: string
     instagram?: string
     twitter?: string
     facebook?: string
   }
-  company_products?: Array<{
+  company_products: {
     product_tag: {
       id: string
       name: string
     }
-  }>
-  created_at: string
-  updated_at: string
+  }[]
+  reviews: {
+    id: string
+    rating: number
+    text?: string
+    created_at: string
+    users: {
+      id: string
+      email: string
+      user_metadata: {
+        name?: string
+      }
+    }
+  }[]
 }
 
 export type Product = {
