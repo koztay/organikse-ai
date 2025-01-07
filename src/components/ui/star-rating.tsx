@@ -10,23 +10,26 @@ interface StarRatingProps {
 }
 
 export function StarRating({ value, onChange, readonly }: StarRatingProps) {
-  const stars = [1, 2, 3, 4, 5]
-
   return (
     <div className="flex gap-1">
-      {stars.map((star) => (
+      {[1, 2, 3, 4, 5].map((rating) => (
         <button
-          key={star}
+          key={rating}
           type="button"
           className={cn(
-            "text-muted-foreground hover:text-primary transition-colors",
-            star <= value && "text-primary",
-            readonly && "cursor-default hover:text-primary"
+            "rounded-md p-1 hover:scale-110 transition-transform",
+            readonly && "cursor-default hover:scale-100"
           )}
-          onClick={() => !readonly && onChange?.(star)}
-          disabled={readonly}
+          onClick={() => !readonly && onChange?.(rating)}
         >
-          <Star className="h-5 w-5 fill-current" />
+          <Star
+            className={cn(
+              "h-5 w-5",
+              rating <= value
+                ? "fill-primary text-primary"
+                : "fill-muted stroke-muted-foreground"
+            )}
+          />
         </button>
       ))}
     </div>
