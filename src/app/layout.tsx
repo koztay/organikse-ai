@@ -17,14 +17,19 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const supabase = createServerComponentClient({ cookies })
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { user } } = await supabase.auth.getUser()
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "min-h-screen bg-background")}>
         <SupabaseProvider>
-          <ThemeProvider>
-            <Navbar session={session} />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar session={user} />
             {children}
             <Footer />
             <Toaster />

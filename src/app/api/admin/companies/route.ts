@@ -6,9 +6,9 @@ export async function GET() {
   const supabase = createRouteHandlerClient({ cookies })
 
   try {
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (!session?.user.user_metadata.is_admin) {
+    if (userError || !user?.user_metadata.is_admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -40,9 +40,9 @@ export async function POST(request: Request) {
   const supabase = createRouteHandlerClient({ cookies })
 
   try {
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (!session?.user.user_metadata.is_admin) {
+    if (userError || !user?.user_metadata.is_admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 

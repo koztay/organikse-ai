@@ -9,9 +9,9 @@ export async function PATCH(
   const supabase = createRouteHandlerClient({ cookies })
 
   try {
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (!session?.user.user_metadata.is_admin) {
+    if (userError || !user?.user_metadata.is_admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -66,9 +66,9 @@ export async function DELETE(
   const supabase = createRouteHandlerClient({ cookies })
 
   try {
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
     
-    if (!session?.user.user_metadata.is_admin) {
+    if (userError || !user?.user_metadata.is_admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 

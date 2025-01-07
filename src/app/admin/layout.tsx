@@ -11,13 +11,13 @@ export default async function AdminLayout({
 }) {
   try {
     const supabase = createServerComponentClient({ cookies })
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user }, error } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (error || !user) {
       redirect('/auth/signin')
     }
 
-    const isAdmin = session.user.user_metadata?.is_admin === true
+    const isAdmin = user.user_metadata?.is_admin === true
     if (!isAdmin) {
       redirect('/')
     }
