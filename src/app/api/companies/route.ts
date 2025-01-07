@@ -6,10 +6,15 @@ export async function GET() {
   const supabase = createRouteHandlerClient({ cookies })
 
   try {
-    const { data, error } = await supabase
+    const { data: companies, error } = await supabase
       .from("companies")
       .select(`
-        *,
+        id,
+        name,
+        email,
+        phone,
+        location,
+        featured,
         company_products (
           product_tag: product_tags (
             id,
@@ -17,19 +22,13 @@ export async function GET() {
           )
         )
       `)
-      .order("name")
+      .order('name')
 
-    if (error) {
-      console.error("Error fetching companies:", error)
-      throw error
-    }
+    if (error) throw error
 
-    // Debug log
-    console.log("Companies data:", data)
-
-    return NextResponse.json(data || [])
+    return NextResponse.json(companies)
   } catch (error) {
-    console.error("Error in companies API:", error)
+    console.error("Error fetching companies:", error)
     return NextResponse.json(
       { error: "Failed to fetch companies" },
       { status: 500 }
