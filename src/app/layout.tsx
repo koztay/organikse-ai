@@ -23,6 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "min-h-screen bg-background")}>
+        {/* @ts-expect-error Server Component */}
         <SupabaseProvider>
           <AuthProvider>
             <ThemeProvider

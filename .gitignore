@@ -3,4 +3,7 @@ init
 .
 .env.local
 .env.*.local
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 .next
