@@ -3,23 +3,26 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // Skip middleware for non-protected routes
+  if (!request.nextUrl.pathname.startsWith('/admin') && 
+      !request.nextUrl.pathname.startsWith('/settings')) {
+    return NextResponse.next()
+  }
+
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req: request, res })
 
   try {
-    // Use getUser instead of getSession
     const { data: { user }, error } = await supabase.auth.getUser()
     
     if (error || !user) {
       return NextResponse.redirect(new URL('/auth/signin', request.url))
     }
 
-    const isAdmin = user.user_metadata?.is_admin === true
-    
-    if (request.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
+    if (request.nextUrl.pathname.startsWith('/admin') && 
+        !user.user_metadata?.is_admin) {
       return NextResponse.redirect(new URL('/', request.url))
     }
-
   } catch (error) {
     console.error('Middleware error:', error)
     return NextResponse.redirect(new URL('/auth/signin', request.url))
@@ -31,7 +34,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/admin/:path*',
-    '/api/admin/:path*',
-    '/auth/:path*'
+    '/settings/:path*',
+    '/api/admin/:path*'
   ]
 } 
