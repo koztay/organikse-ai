@@ -9,6 +9,12 @@ export type Company = {
     twitter?: string
     facebook?: string
   }
+  company_products?: Array<{
+    product_tag: {
+      id: string
+      name: string
+    }
+  }>
   created_at: string
   updated_at: string
 }
