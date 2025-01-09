@@ -42,7 +42,7 @@ export default async function Home() {
     <main className="flex-1">
       <div className="container max-w-7xl py-6">
         {featuredCompanies && featuredCompanies.length > 0 && (
-          <FeaturedCompanies companies={featuredCompanies as Company[]} />
+          <FeaturedCompanies companies={featuredCompanies as unknown as Company[]} />
         )}
       </div>
     </main>
