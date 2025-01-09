@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { useSession } from "next-auth/react"
+import { useState, useMemo, useEffect } from "react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { StarRating } from "@/components/ui/star-rating"
@@ -43,11 +43,20 @@ interface CompanyReviewsProps {
 }
 
 export function CompanyReviews({ companyId, reviews }: CompanyReviewsProps) {
-  const { data: session } = useSession()
   const { toast } = useToast()
   const [newReview, setNewReview] = useState({ rating: 0, text: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [editingReview, setEditingReview] = useState<Review | null>(null)
+  const [session, setSession] = useState<any>(null)
+  const supabase = createClientComponentClient()
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setSession(session)
+    }
+    getSession()
+  }, [supabase.auth])
 
   // Find user's review if it exists
   const userReview = useMemo(() => {
