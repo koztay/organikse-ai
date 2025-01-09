@@ -5,23 +5,27 @@ import type { NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req: request, res })
-  
-  // Refresh session if expired - required for Server Components
-  await supabase.auth.getSession()
+
+  // Refresh session if expired
+  const { data: { session } } = await supabase.auth.getSession()
+
+  // Handle protected routes
+  if (request.nextUrl.pathname.startsWith('/admin') && !session?.user?.user_metadata?.is_admin) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
 
   return res
 }
 
-// Specify which routes to run middleware on
 export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
+     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - public folder
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 } 

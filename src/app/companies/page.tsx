@@ -1,5 +1,8 @@
 import { CompanyList } from "@/components/companies/company-list"
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default function CompaniesPage() {
   return (
     <div className="container max-w-7xl py-8">

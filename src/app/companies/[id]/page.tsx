@@ -80,6 +80,9 @@ async function getCompany(id: string) {
   }
 }
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function CompanyPage({ params }: { params: { id: string } }) {
   const company = await getCompany(params.id)
 
