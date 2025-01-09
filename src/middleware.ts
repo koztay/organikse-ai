@@ -3,39 +3,25 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  // Skip middleware for non-protected routes
-  if (!request.nextUrl.pathname.startsWith('/admin') && 
-      !request.nextUrl.pathname.startsWith('/settings')) {
-    return NextResponse.next()
-  }
-
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req: request, res })
-
-  try {
-    const { data: { user }, error } = await supabase.auth.getUser()
-    
-    if (error || !user) {
-      return NextResponse.redirect(new URL('/auth/signin', request.url))
-    }
-
-    if (request.nextUrl.pathname.startsWith('/admin') && 
-        !user.user_metadata?.is_admin) {
-      return NextResponse.redirect(new URL('/', request.url))
-    }
-  } catch (error) {
-    console.error('Middleware error:', error)
-    return NextResponse.redirect(new URL('/auth/signin', request.url))
-  }
+  
+  // Refresh session if expired - required for Server Components
+  await supabase.auth.getSession()
 
   return res
 }
 
-// Only protect specific routes
+// Specify which routes to run middleware on
 export const config = {
   matcher: [
-    '/admin/:path*',
-    '/settings/:path*',
-    '/((?!api|_next/static|_next/image|favicon.ico|test|companies).)*'
-  ]
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 } 
