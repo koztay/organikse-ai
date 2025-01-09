@@ -2,9 +2,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { Navbar } from "./navbar"
 
-export async function NavbarWrapper() {
-  const supabase = createServerComponentClient({ cookies })
-  const { data: { session } } = await supabase.auth.getSession()
+export const dynamic = 'force-dynamic'
 
-  return <Navbar session={session} />
+export async function NavbarWrapper() {
+  return <Navbar />
 } 
