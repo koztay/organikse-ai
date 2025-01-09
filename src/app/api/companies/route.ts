@@ -2,7 +2,6 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
@@ -27,8 +26,17 @@ export async function GET() {
       `)
       .order('name')
 
-    if (error) throw error
+    if (error) {
+      console.error("Supabase error:", error)
+      throw error
+    }
 
+    if (!companies) {
+      console.log("No companies found")
+      return NextResponse.json([])
+    }
+
+    console.log("Fetched companies:", companies) // Debug log
     return NextResponse.json(companies)
   } catch (error) {
     console.error("Error fetching companies:", error)
