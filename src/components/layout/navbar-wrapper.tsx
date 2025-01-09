@@ -1,9 +1,7 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
+"use client"
+
 import { Navbar } from "./navbar"
 
-export const dynamic = 'force-dynamic'
-
-export async function NavbarWrapper() {
+export function NavbarWrapper() {
   return <Navbar />
 } 

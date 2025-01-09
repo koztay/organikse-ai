@@ -2,68 +2,41 @@ import { NextAuthOptions } from "next-auth"
 import NextAuth from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { supabase } from "@/lib/supabase"
+import { User } from '@supabase/supabase-js'
+
+export const runtime = 'edge'
 
 export const authOptions: NextAuthOptions = {
-  debug: true,
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials): Promise<any | null> {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Please enter an email and password')
-        }
+      async authorize(credentials, req): Promise<import("next-auth").User | null> {
+        if (!credentials?.email || !credentials?.password) return null
+        
+        const { data: { user }, error } = await supabase.auth.signInWithPassword({
+          email: credentials.email,
+          password: credentials.password,
+        })
 
-        try {
-          const { data: { user }, error } = await supabase.auth.signInWithPassword({
-            email: credentials.email,
-            password: credentials.password,
-          })
-
-          if (error) {
-            throw new Error(error.message)
-          }
-
-          if (!user) {
-            throw new Error('No user found')
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.user_metadata?.full_name,
-          }
-        } catch (error) {
-          console.error('Auth error:', error)
-          throw error
+        if (error || !user || !user.email) return null
+        
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.full_name || user.email,
         }
       }
     })
   ],
-  pages: {
-    signIn: '/auth/signin',
-  },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id
-        token.isAdmin = true
-      }
-      return token
-    },
-    async session({ session, token }) {
-      if (session?.user) {
-        session.user.id = token.id as string
-        session.user.isAdmin = token.isAdmin as boolean
-      }
-      return session
-    }
-  },
   session: {
     strategy: "jwt"
+  },
+  pages: {
+    signIn: '/auth/signin',
   }
 }
 

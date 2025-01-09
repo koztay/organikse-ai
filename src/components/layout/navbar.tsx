@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClientComponentClient, Session } from "@supabase/auth-helpers-nextjs"
 import Link from "next/link"
 import { UserNav } from "@/components/user-nav"
 
 export function Navbar() {
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
   const supabase = createClientComponentClient()
 
   useEffect(() => {
